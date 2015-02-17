@@ -19,7 +19,7 @@ ali-sdk
 [gittip-url]: https://www.gittip.com/fengmk2/
 [david-image]: https://img.shields.io/david/node-modules/ali-sdk.svg?style=flat-square
 [david-url]: https://david-dm.org/node-modules/ali-sdk
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=_0.11.14-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/ali-sdk.svg?style=flat-square
 [download-url]: https://npmjs.org/package/ali-sdk
@@ -34,13 +34,26 @@ Let global users can all use ali's services more easily.
 
 ### aliyun
 
-name | version | usage document | origin api reference
----  | ---     | ---            | ---
-OSS  | -       | [OSS Usage]    | [OSS API 文档]
-OTS  | -       | [OTS Usage]    | -
-OCS  | -       | [OCS Usage]    | -
-ECS  | -       | [ECS Usage]    | -
-RDS  | -       | [RDS Usage]    | -
+name | sdk status | version | usage document | origin api reference
+---  | ---        | ---     | ---            | ---
+OSS  | TODO       | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
+OTS  | TODO       | -       | [OTS Usage]    | [OTS API](http://docs.aliyun.com/#/ots/API-Reference/actions&ActionsSummary)
+OCS  | TODO       | -       | [OCS Usage]    | [OCS protocol](http://docs.aliyun.com/#/ocs/Getting-Started/ocs-supported-protocol)
+ECS  | TODO       | -       | [ECS Usage]    | -
+RDS  | TODO       | -       | [RDS Usage]    | -
+DRDS | TODO       | -       | [DRDS Usage]   | [DRDS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974369)
+SLB  | TODO       | -       | [SLB Usage]    | -
+CDN  | TODO       | -       | [CDN Usage]    | -
+SLS  | TODO       | -       | [SLS Usage]    | [SLS API](http://docs.aliyun.com/#/sls/api/overview)
+MQS  | TODO       | 2014-07-08 | [MQS Usage] | [MQS-API-Reference_2014-07-08.pdf](http://imgs-storage.cdn.aliyuncs.com/help/mqs/MQS-API-Reference_2014-07-08.pdf)
+OpenSearch | TODO | - | [OpenSearch Usage] | [OpenSearch API](http://help.opensearch.aliyun.com/index.php?title=API%E6%96%87%E6%A1%A3)
+MTS | TODO       | v1501 | [MTS Usage] | [MTS API](http://imgs-storage.cdn.aliyuncs.com/help/mts/%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%9A%E5%AA%92%E4%BD%93%E8%BD%AC%E7%A0%81%E6%9C%8D%E5%8A%A1API%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8Cv1501.pdf)
+ACE | TODO       | - | [ACE Usage] | [ACE API]
+ESS | TODO       | - | [ESS Usage] | [ESS API](http://imgs-storage.cdn.aliyuncs.com/help/ess/%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1API%E6%89%8B%E5%86%8C.pdf)
+OAS | TODO       | - | [OAS Usage] | [OAS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974642)
+KVStore | TODO   | - | [KVStore Usage] | [KVStore API](http://docs.aliyun.com/#/kvstore/quick-start/kvstore-redis-command)
+ODPS | TODO      | - | [ODPS Usage] | [ODPS API](http://docs.aliyun.com/#/odps)
+ADS | TODO       | - | [ADS Usage] | [ADS API]
 
 ### taobao
 
@@ -67,4 +80,13 @@ TBD
 [SLB Usage]: docs/slb.md
 [CDN Usage]: docs/cdn.md
 [SLS Usage]: docs/sls.md
-[OSS API 文档]: http://docs.aliyun.com/#/oss/api-reference/abstract
+[MQS Usage]: docs/mqs.md
+[OpenSearch Usage]: docs/openserach.md
+[MTS Usage]: docs/mts.md
+[ACE Usage]: docs/ace.md
+[ESS Usage]: docs/ess.md
+[DRDS Usage]: docs/drds.md
+[OAS Usage]: docs/oas.md
+[KVStore Usage]: docs/kvstore.md
+[ODPS Usage]: docs/odps.md
+[ADS Usage]: docs/ads.md
