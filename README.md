@@ -34,7 +34,7 @@ Let global users can all use ali's services more easily.
 
 ### aliyun
 
-name | sdk status | version | usage document | origin api reference
+name | status     | version | usage          | origin api
 ---  | ---        | ---     | ---            | ---
 OSS  | TODO       | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
 OTS  | TODO       | -       | [OTS Usage]    | [OTS API](http://docs.aliyun.com/#/ots/API-Reference/actions&ActionsSummary)
