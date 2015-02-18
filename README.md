@@ -34,26 +34,26 @@ Let global users can all use ali's services more easily.
 
 ### aliyun
 
-name | status     | version | usage          | origin api
----  | ---        | ---     | ---            | ---
-OSS  | TODO       | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
-OTS  | TODO       | -       | [OTS Usage]    | [OTS API](http://docs.aliyun.com/#/ots/API-Reference/actions&ActionsSummary)
-OCS  | TODO       | -       | [OCS Usage]    | [OCS protocol](http://docs.aliyun.com/#/ocs/Getting-Started/ocs-supported-protocol)
-ECS  | TODO       | -       | [ECS Usage]    | -
-RDS  | TODO       | -       | [RDS Usage]    | -
-DRDS | TODO       | -       | [DRDS Usage]   | [DRDS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974369)
-SLB  | TODO       | -       | [SLB Usage]    | -
-CDN  | TODO       | -       | [CDN Usage]    | -
-SLS  | TODO       | -       | [SLS Usage]    | [SLS API](http://docs.aliyun.com/#/sls/api/overview)
-MQS  | TODO       | 2014-07-08 | [MQS Usage] | [MQS-API-Reference_2014-07-08.pdf](http://imgs-storage.cdn.aliyuncs.com/help/mqs/MQS-API-Reference_2014-07-08.pdf)
-OpenSearch | TODO | - | [OpenSearch Usage] | [OpenSearch API](http://help.opensearch.aliyun.com/index.php?title=API%E6%96%87%E6%A1%A3)
-MTS | TODO       | v1501 | [MTS Usage] | [MTS API](http://imgs-storage.cdn.aliyuncs.com/help/mts/%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%9A%E5%AA%92%E4%BD%93%E8%BD%AC%E7%A0%81%E6%9C%8D%E5%8A%A1API%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8Cv1501.pdf)
-ACE | TODO       | - | [ACE Usage] | [ACE API]
-ESS | TODO       | - | [ESS Usage] | [ESS API](http://imgs-storage.cdn.aliyuncs.com/help/ess/%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1API%E6%89%8B%E5%86%8C.pdf)
-OAS | TODO       | - | [OAS Usage] | [OAS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974642)
-KVStore | TODO   | - | [KVStore Usage] | [KVStore API](http://docs.aliyun.com/#/kvstore/quick-start/kvstore-redis-command)
-ODPS | TODO      | - | [ODPS Usage] | [ODPS API](http://docs.aliyun.com/#/odps)
-ADS | TODO       | - | [ADS Usage] | [ADS API]
+name | status     | description | version | usage          | origin api
+---  | ---        | ---         | ---     | ---            | ---
+OSS  | TODO       | Simple Store like S3 | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
+OTS  | TODO       | Table Store like HBase | -       | [OTS Usage]    | [OTS API](http://docs.aliyun.com/#/ots/API-Reference/actions&ActionsSummary)
+OCS  | TODO       | Cache Service like Memcached | -       | [OCS Usage]    | [OCS protocol](http://docs.aliyun.com/#/ocs/Getting-Started/ocs-supported-protocol)
+ECS  | TODO       | Elastic Compute like EC2 | -       | [ECS Usage]    | -
+RDS  | TODO       | Relational Database like MySQL | -       | [RDS Usage]    | -
+DRDS | TODO       | Distribute Relational Database | -       | [DRDS Usage]   | [DRDS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974369)
+SLB  | TODO       | Server Load Balancer | -       | [SLB Usage]    | -
+CDN  | TODO       | Content Delivery Network | -       | [CDN Usage]    | -
+SLS  | TODO       | Simple Log Service | -       | [SLS Usage]    | [SLS API](http://docs.aliyun.com/#/sls/api/overview)
+MQS  | TODO       | Message Queue | 2014-07-08 | [MQS Usage] | [MQS-API](http://imgs-storage.cdn.aliyuncs.com/help/mqs/MQS-API-Reference_2014-07-08.pdf)
+OpenSearch | TODO | Search Engine | - | [OpenSearch Usage] | [OpenSearch API](http://help.opensearch.aliyun.com/index.php?title=API%E6%96%87%E6%A1%A3)
+MTS | TODO       | Multimedia Transcoding Service | v1501 | [MTS Usage] | [MTS API](http://imgs-storage.cdn.aliyuncs.com/help/mts/%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%9A%E5%AA%92%E4%BD%93%E8%BD%AC%E7%A0%81%E6%9C%8D%E5%8A%A1API%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8Cv1501.pdf)
+ACE | TODO       | Aliyun Cloud Engine | - | [ACE Usage] | [ACE API]
+ESS | TODO       | Elastic Scaling | - | [ESS Usage] | [ESS API](http://imgs-storage.cdn.aliyuncs.com/help/ess/%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1API%E6%89%8B%E5%86%8C.pdf)
+OAS | TODO       | Archive Service | - | [OAS Usage] | [OAS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974642)
+KVStore | TODO   | Key-Value Store like Redis | - | [KVStore Usage] | [KVStore API](http://docs.aliyun.com/#/kvstore/quick-start/kvstore-redis-command)
+ODPS | TODO      | Data Processing like Hadoop | - | [ODPS Usage] | [ODPS API](http://docs.aliyun.com/#/odps)
+ADS | TODO       | Analytic Database, Realtime OLAP | - | [ADS Usage] | [ADS API]
 
 ### taobao
 
