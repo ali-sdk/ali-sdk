@@ -416,7 +416,66 @@ console.log(result);
 yield store.updateMeta('ossdemo.txt', null);
 ```
 
+### .deleteMulti(names[, options])
+
+Delete multi objects in one request.
+
+parameters:
+
+- names {Array<String>} object names, max 1000 objects in once.
+- [options] {Object} optional parameters
+  - [quiet] {Boolean} quiet mode or verbose mode, default is `false`, verbose mode
+    quiet mode: if all objects delete succes, return emtpy response.
+      otherwise return delete error object results.
+    verbose mode: return all object delete results.
+  - [timeout] {Number} the operation timeout
+
+Success will return delete success objects in `deleted` property.
+
+- [deleted] {Array<Object>} object delete result list
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Delete multi objects in quiet mode
+
+```js
+var result = yield store.deleteMulti(['obj1', 'obj2', 'obj3'], {
+  quiet: true
+});
+```
+
+- Delete multi objects in verbose mode
+
+```js
+var result = yield store.deleteMulti(['obj1', 'obj2', 'obj3']);
+```
+
 ### .signatureUrl(name)
+
+Create a signature url for directly download.
+
+parameters:
+
+- name {String} object name store on OSS
+- [options] {Object} optional parameters
+  - [expires] {Number} after expires seconds, the url will become invalid, default is `1800`
+  - [timeout] {Number} the operation timeout
+
+Success will return signature url.
+
+example:
+
+- Get an object signature url for download
+
+```js
+var url = store.signatureUrl('ossdemo.txt');
+console.log(url);
+```
 
 ## Known Errors
 

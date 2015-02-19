@@ -36,7 +36,7 @@ Let global users can all use ali's services more easily.
 
 name | status     | description | version | usage          | origin api
 ---  | ---        | ---         | ---     | ---            | ---
-OSS  | TODO       | Simple Store like S3 | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
+OSS  | ING        | Simple Store like S3 | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
 OTS  | TODO       | Table Store like HBase | -       | [OTS Usage]    | [OTS API](http://docs.aliyun.com/#/ots/API-Reference/actions&ActionsSummary)
 OCS  | TODO       | Cache Service like Memcached | -       | [OCS Usage]    | [OCS protocol](http://docs.aliyun.com/#/ocs/Getting-Started/ocs-supported-protocol)
 ECS  | TODO       | Elastic Compute like EC2 | -       | [ECS Usage]    | -
