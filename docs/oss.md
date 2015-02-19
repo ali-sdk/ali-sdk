@@ -317,6 +317,105 @@ yield store.delete('ossdemo/someobject');
 yield store.delete('ossdemo/some-not-exists-object');
 ```
 
+### .copy*(name, sourceName[, options])
+
+Copy an object from `sourceName` to `name`.
+
+parameters:
+
+- name {String} object name store on OSS
+- sourceName {String} source object name
+  If `sourceName` start with `/`, meaning it's a full name contains the bucket name.
+  e.g.: `/otherbucket/logo.png` meaning copy `otherbucket` logn.png object to current bucket.
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+  - [meta] {Object} user meta, will send with `x-oss-meta-` prefix string
+    e.g.: `{ uid: 123, pid: 110 }`
+    If the `meta` set, will override the source object meta.
+  - [headers] {Object} extra headers
+    - 'If-Match' do copy if source object etag equal this,
+      otherwise throw PreconditionFailedError
+    - 'If-None-Match' do copy if source object etag not equal this,
+      otherwise throw PreconditionFailedError
+    - 'If-Modified-Since' do copy if source object modified after this time,
+        otherwise throw PreconditionFailedError
+    - 'If-Unmodified-Since' do copy if source object modified before this time,
+        otherwise throw PreconditionFailedError
+
+Success will return the copy result in `data` property.
+
+object:
+
+- data {Object} copy result
+  - LastModified {String} object last modified GMT string
+  - ETag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If source object not exists, will throw NoSuchKeyError.
+
+example:
+
+- Copy same bucket object
+
+```js
+var result = yield store.copy('newName', 'oldName');
+```
+
+- Copy other bucket object
+
+```js
+var result = yield store.copy('logo.png', '/other-bucket/logo.png');
+```
+
+### .updateMeta*(name, meta[, options])
+
+Update an exists object meta.
+
+parameters:
+
+- name {String} object name store on OSS
+- meta {Object} user meta, will send with `x-oss-meta-` prefix string
+  e.g.: `{ uid: 123, pid: 110 }`
+  If `meta: null`, will clean up the exists meta
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the copy result in `data` property.
+
+object:
+
+- data {Object} copy result
+  - LastModified {String} object last modified GMT date, e.g.: `2015-02-19T08:39:44.000Z`
+  - ETag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If object not exists, will throw NoSuchKeyError.
+
+example:
+
+- Update exists object meta
+
+```js
+var result = yield store.updateMeta('ossdemo.txt', {
+  uid: 1, pid: 'p123'
+});
+console.log(result);
+```
+
+- Clean up object meta
+
+```js
+yield store.updateMeta('ossdemo.txt', null);
+```
+
 ### .signatureUrl(name)
 
 ## Known Errors
