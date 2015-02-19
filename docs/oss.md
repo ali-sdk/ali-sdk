@@ -61,10 +61,10 @@ parameters:
   - [meta] {Object} user meta, will send with `x-oss-meta-` prefix string
     e.g.: `{ uid: 123, pid: 110 }`
   - [headers] {Object} extra headers, detail see [RFC 2616](http://www.w3.org/Protocols/rfc2616/rfc2616.html)
-    - 'Cache-Control' cache control for download
-    - 'Content-Disposition' object name for download
-    - 'Content-Encoding' object content encoding for download
-    - 'Expires' expires time (milliseconds) for download
+    - 'Cache-Control' cache control for download, e.g.: `Cache-Control: public, no-cache`
+    - 'Content-Disposition' object name for download, e.g.: `Content-Disposition: somename`
+    - 'Content-Encoding' object content encoding for download, e.g.: `Content-Encoding: gzip`
+    - 'Expires' expires time (milliseconds) for download, e.g.: `Expires: 3600000`
 
 Success will return the object information.
 
@@ -218,7 +218,104 @@ var object = this.store.head('ossdemo/head-meta');
 
 ### .get*(name, file[, options])
 
+Get an object from the bucket.
+
+parameters:
+
+- name {String} object name store on OSS
+- [file] {String|WriteStream} file path or WriteStream instance to store the content
+  If `file` is null or ignore this parameter, function will return info contains `content` property.
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+  - [headers] {Object} extra headers, detail see [RFC 2616](http://www.w3.org/Protocols/rfc2616/rfc2616.html)
+    - 'Range' get specifying range bytes content, e.g.: `Range: bytes=0-9`
+    - 'If-Modified-Since' object modified after this time will return 200 and object meta,
+        otherwise return 304 not modified
+    - 'If-Unmodified-Since' object modified before this time will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-Match' object etag equal this will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-None-Match' object etag not equal this will return 200 and object meta,
+        otherwise return 304 not modified
+
+Success will return the info contains response.
+
+object:
+
+- [content] {Buffer} file content buffer if `file` parameter is null or ignore
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If object not exists, will throw NoSuchKeyError.
+
+example:
+
+- Get an exists object and store it to the local file
+
+```js
+var filepath = '/home/ossdemo/demo.txt';
+yield store.get('ossdemo/demo.txt', filepath);
+```
+
+_ Store object to a writestream
+
+```js
+yield store.get('ossdemo/demo.txt', somestream);
+```
+
+- Get an object content buffer
+
+```js
+var result = yield store.get('ossdemo/demo.txt');
+console.log(Buffer.isBuffer(result.content));
+```
+
+- Get a not exists object
+
+```js
+var filepath = '/home/ossdemo/demo.txt';
+yield store.get('ossdemo/not-exists-demo.txt', filepath);
+// will throw NoSuchKeyError
+```
+
 ### .delete*(name[, options])
+
+Delete an object from the bucket.
+
+parameters:
+
+- name {String} object name store on OSS
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the info contains response.
+
+object:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If delete object not exists, will also delete success.
+
+example:
+
+- Delete an exists object
+
+```js
+yield store.delete('ossdemo/someobject');
+```
+
+- Delete a not exists object
+
+```js
+yield store.delete('ossdemo/some-not-exists-object');
+```
 
 ### .signatureUrl(name)
 
