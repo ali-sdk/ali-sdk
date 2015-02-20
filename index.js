@@ -1,1 +1,3 @@
-module.exports = require('./lib/ali-sdk');
+module.exports = {
+  oss: require('./lib/oss')
+};

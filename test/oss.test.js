@@ -1,7 +1,7 @@
 /**!
  * ali-sdk - test/oss.test.js
  *
- * Copyright(c) fengmk2 and other contributors.
+ * Copyright(c) node-modules and other contributors.
  * MIT Licensed
  *
  * Authors:
@@ -15,7 +15,7 @@
  */
 
 var assert = require('assert');
-var oss = require('../lib/oss');
+var oss = require('../').oss;
 var config = require('./config');
 
 describe('oss.test.js', function () {

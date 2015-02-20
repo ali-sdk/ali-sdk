@@ -2,7 +2,42 @@
 
 OSS, Open Storage Service. Equal to well know Amazon [S3](http://aws.amazon.com/s3/).
 
-## Create account
+## Summary
+
+- [Data Regions](#data-regions)
+- [Create Account](#create-acount)
+- [Create A Bucket Instance](#create-a-bucket-instance)
+  - [#oss(options)](#ossoptions)
+- [Bucket Operations](#bucket-operations)
+  - [.putBucket*(name[, region][, options])](#putbucketname-options)
+  - [.setBucket(name[, region])](#setbucketname-region)
+  - [.listBuckets*(query[, options])](#listbucketsquery-options)
+  - [.deleteBucket*(name[, options])](#deletebucketname-options)
+- [Object Operations](#object-operations)
+  - [.put*(name, file[, options])](#putname-file-options)
+  - [.head*(name[, options])](#headname-options)
+  - [.get*(name, file[, options])](#getname-file-options)
+  - [.delete*(name[, options])](#deletename-options)
+  - [.copy*(name, sourceName[, options])](#copyname-sourcename-options)
+  - [.updateMeta*(name, meta[, options])](#updatemetaname-meta-options)
+  - [.deleteMulti*(names[, options])](#deletemultinames-options)
+  - [.signatureUrl(name)](#signatureurlname)
+  - [.list*(query[, options])](#listquery-options)
+- [Known Errors](#known-errors)
+
+## Data Regions
+
+OSS current have 5 data regions.
+
+name | country | city | domain
+---  | ---     | ---  | ---
+oss-cn-hangzhou | China | HangZhou | oss-cn-hangzhou.aliyuncs.com
+oss-cn-qingdao | China | QingDao | oss-cn-qingdao.aliyuncs.com
+oss-cn-beijing | China | BeiJing | oss-cn-beijing.aliyuncs.com
+oss-cn-hongkong | China | HongKong | oss-cn-hongkong.aliyuncs.com
+oss-cn-shenzhen | China | ShenZhen | oss-cn-shenzhen.aliyuncs.com
+
+## Create Account
 
 Go to [OSS website](http://www.aliyun.com/product/oss), create a new account for new user.
 Only Chinese page available right now. If you need translation, contact us.
@@ -21,14 +56,19 @@ options:
 
 - accessKeyId {String} access key you create on aliyun console website
 - accessKeySecret {String} access secret you create
-- bucket {String} the bucket you want to access
-- [host] {String} optional, OSS server host, default is `oss.aliyuncs.com`
+- [bucket] {String} the default bucket you want to access
+  If you don't have any bucket, please use `putBucket()` create one first.
+- [region] {String} the bucket data region location, please see [Data Regions](#data-regions),
+  default is `oss-cn-hangzhou`
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [internal] {Boolean} access OSS with aliyun internal network or not, default is `false`
+  If your servers are running on aliyun too, you can set `true` to save lot of money.
 - [timeout] {String|Number} instance level timeout for all operations, default is `60s`
 
 example:
 
 ```js
-var oss = require('ali-sdk/lib/oss');
+var oss = require('ali-sdk').oss;
 
 var store = oss({
   accessKeyId: 'your access key',
@@ -39,7 +79,133 @@ var store = oss({
 
 ## Bucket Operations
 
-TBD
+### .putBucket*(name[, options])
+
+Create a new bucket.
+
+parameters:
+
+- name {String} bucket name
+  If bucket exists and not belong to current account, will throw BucketAlreadyExistsError.
+  If current account total bucket hit the limit 10, will throw TooManyBucketsError.
+- [options] {Object} optional parameters
+  - [region] {String} the bucket data region location, please see [Data Regions](#data-regions),
+    default using store instance's region.
+    Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+    If change exists bucket region, will throw BucketAlreadyExistsError.
+    If region value invalid, will throw InvalidLocationConstraintError.
+  - [timeout] {Number} the operation timeout
+
+Success will return the bucket name on `bucket` properties.
+
+- bucket {String} bucket name
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Create a bucket name `helloworld` location on HongKong
+
+```js
+yield store.putBucket('helloworld', {
+  region: 'oss-cn-hongkong'
+});
+// set to use it by default
+store.setBucket('helloworld', 'oss-cn-hongkong');
+```
+
+### .setBucket(name[, region])
+
+Set current bucket.
+
+parameters:
+
+- name {String} bucket name
+- [region] {String} also change the region, default is `null`, don't change region.
+
+example:
+
+- Set `helloworld` to default bucket
+
+```js
+store.setBucket('helloworld');
+```
+
+### .deleteBucket*(name[, options])
+
+Delete an empty bucket.
+
+parameters:
+
+- name {String} bucket name
+  If bucket is not empty, will throw BucketNotEmptyError.
+  If bucket is not exists, will throw NoSuchBucketError.
+- [options] {Object} optional parameters
+  - [region] {String} the bucket data region location, please see [Data Regions](#data-regions),
+    default using store instance's region.
+    Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Delete the exists 'helloworld' bucket on 'oss-cn-hongkong'
+
+```js
+yield store.deleteBucket('helloworld', {
+  region: 'oss-cn-hongkong'
+});
+```
+
+### .listBuckets*(query[, options])
+
+List buckets in this account.
+
+parameters:
+
+- [query] {Object} query parameters, default is `null`
+  - [prefix] {String} search buckets using `prefix` key
+  - [marker] {String} search start from `marker`, including `marker` key
+  - [max-keys] {String|Number} max buckets, default is `100`, limit to `1000`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return buckets list on `buckets` properties.
+
+- buckets {Array<BucketMeta>} bucket meta info list
+  Each `BucketMeta` will contains blow properties:
+    - Name {String} bucket name
+    - Location {String} bucket store data region, e.g.: `oss-cn-hangzhou-a`
+    - CreationDate {String} bucket create GMT date, e.g.: `2015-02-19T08:39:44.000Z`
+- owner {Object} object owner, including `ID` and `DisplayName`
+- isTruncated {Boolean} truncate or not
+- nextMarker {String} next marker string
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- List top 10 buckets
+
+```js
+var result = yield store.listBuckets({
+  "max-keys": 10
+});
+console.log(result);
+```
 
 ## Object Operations
 
@@ -416,7 +582,7 @@ console.log(result);
 yield store.updateMeta('ossdemo.txt', null);
 ```
 
-### .deleteMulti(names[, options])
+### .deleteMulti*(names[, options])
 
 Delete multi objects in one request.
 
@@ -453,6 +619,69 @@ var result = yield store.deleteMulti(['obj1', 'obj2', 'obj3'], {
 
 ```js
 var result = yield store.deleteMulti(['obj1', 'obj2', 'obj3']);
+```
+
+### .list*(query[, options])
+
+List objects in the bucket.
+
+parameters:
+
+- [query] {Object} query parameters, default is `null`
+  - [prefix] {String} search object using `prefix` key
+  - [marker] {String} search start from `marker`, including `marker` key
+  - [delimiter] {String} delimiter search scope
+    e.g. `/` only search current dir, not including subdir
+  - [max-keys] {String|Number} max objects, default is `100`, limit to `1000`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return objects list on `objects` properties.
+
+- objects {Array<ObjectMeta>} object meta info list
+  Each `ObjectMeta` will contains blow properties:
+    - Key {String} object name on oss
+    - LastModified {String} object last modified GMT date, e.g.: `2015-02-19T08:39:44.000Z`
+    - ETag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
+    - Type {String} object type, e.g.: `Normal`
+    - Size {Number} object size, e.g.: `344606`
+    - StorageClass {String} storage class type, e.g.: `Standard`
+    - Owner {Object} object owner, including `ID` and `DisplayName`
+- prefixes {Array<String>} prefix list
+- isTruncated {Boolean} truncate or not
+- nextMarker {String} next marker string
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- List top 10 objects
+
+```js
+var result = yield store.list();
+console.log(result.objects);
+```
+
+- List `fun/` dir including subdirs objects
+
+```js
+var result = yield store.list({
+  perfix: 'fun/'
+});
+console.log(result.objects);
+```
+
+- List `fun/` dir objects, not including subdirs
+
+```js
+var result = yield store.list({
+  perfix: 'fun/',
+  delimiter: '/'
+});
+console.log(result.objects);
 ```
 
 ### .signatureUrl(name)
