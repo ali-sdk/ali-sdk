@@ -6,6 +6,7 @@ ali-sdk
 [![Test coverage][coveralls-image]][coveralls-url]
 [![Gittip][gittip-image]][gittip-url]
 [![David deps][david-image]][david-url]
+[![iojs version][iojs-image]][iojs-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
@@ -19,6 +20,8 @@ ali-sdk
 [gittip-url]: https://www.gittip.com/fengmk2/
 [david-image]: https://img.shields.io/david/node-modules/ali-sdk.svg?style=flat-square
 [david-url]: https://david-dm.org/node-modules/ali-sdk
+[iojs-image]: https://img.shields.io/badge/io.js-%3E=_1.0-green.svg?style=flat-square
+[iojs-url]: http://iojs.org/
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.11.14-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/ali-sdk.svg?style=flat-square

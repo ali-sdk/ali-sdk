@@ -9,20 +9,40 @@ OSS, Open Storage Service. Equal to well know Amazon [S3](http://aws.amazon.com/
 - [Create A Bucket Instance](#create-a-bucket-instance)
   - [#oss(options)](#ossoptions)
 - [Bucket Operations](#bucket-operations)
-  - [.putBucket*(name[, region][, options])](#putbucketname-options)
-  - [.setBucket(name[, region])](#setbucketname-region)
-  - [.listBuckets*(query[, options])](#listbucketsquery-options)
-  - [.deleteBucket*(name[, options])](#deletebucketname-options)
+  - Base
+    - [.listBuckets*(query[, options])](#listbucketsquery-options)
+    - [.putBucket*(name, region[, options])](#putbucketname-region-options)
+    - [.useBucket(name, region)](#usebucketname-region)
+    - [.deleteBucket*(name, region[, options])](#deletebucketname-region-options)
+  - ACL
+    - [.putBucketACL*(name, region, acl[, options])](#putbucketaclname-region-acl-options)
+    - [.getBucketACL*(name, region[, options])](#getbucketaclname-region-options)
+  - Logging
+    - [.putBucketLogging*(name, region, prefix[, options])](#putbucketloggingname-region-prefix-options)
+    - [.getBucketLogging*(name, region[, options])](#getbucketloggingname-region-options)
+    - [.deleteBucketLogging*(name, region[, options])](#deletebucketloggingname-region-options)
+  - Website
+    - [.putBucketWebsite*(name, region, config[, options])](#putbucketwebistename-region-config-options)
+    - [.getBucketWebsite*(name, region[, options])](#getbucketwebsitename-region-options)
+    - [.deleteBucketWebsite*(name, region[, options])](#deletebucketwebistename-region-options)
+  - Referer
+    - [.putBucketReferer*(name, region, allowEmpty, referers[, options])](#putbucketreferername-region-allowEmpty-referers-options)
+    - [.getBucketReferer*(name, region[, options])](#getbucketreferername-region-options)
+    - [.deleteBucketReferer*(name, region[, options])](#deletebucketreferername-region-options)
+  - Lifecycle
+    - [.putBucketLifecycle*(name, region, rules[, options])](#putbucketlifecyclename-region-rules-options)
+    - [.getBucketLifecycle*(name, region[, options])](#getbucketlifecyclename-region-options)
+    - [.deleteBucketLifecycle*(name, region[, options])](#deletebucketlifecyclename-region-options)
 - [Object Operations](#object-operations)
+  - [.list*(query[, options])](#listquery-options)
   - [.put*(name, file[, options])](#putname-file-options)
   - [.head*(name[, options])](#headname-options)
   - [.get*(name, file[, options])](#getname-file-options)
   - [.delete*(name[, options])](#deletename-options)
   - [.copy*(name, sourceName[, options])](#copyname-sourcename-options)
-  - [.updateMeta*(name, meta[, options])](#updatemetaname-meta-options)
+  - [.putMeta*(name, meta[, options])](#putmetaname-meta-options)
   - [.deleteMulti*(names[, options])](#deletemultinames-options)
   - [.signatureUrl(name)](#signatureurlname)
-  - [.list*(query[, options])](#listquery-options)
 - [Known Errors](#known-errors)
 
 ## Data Regions
@@ -74,98 +94,11 @@ var store = oss({
   accessKeyId: 'your access key',
   accessKeySecret: 'your access secret',
   bucket: 'your bucket name'
+  region: 'oss-cn-hongkong'
 });
 ```
 
 ## Bucket Operations
-
-### .putBucket*(name[, options])
-
-Create a new bucket.
-
-parameters:
-
-- name {String} bucket name
-  If bucket exists and not belong to current account, will throw BucketAlreadyExistsError.
-  If current account total bucket hit the limit 10, will throw TooManyBucketsError.
-- [options] {Object} optional parameters
-  - [region] {String} the bucket data region location, please see [Data Regions](#data-regions),
-    default using store instance's region.
-    Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
-    If change exists bucket region, will throw BucketAlreadyExistsError.
-    If region value invalid, will throw InvalidLocationConstraintError.
-  - [timeout] {Number} the operation timeout
-
-Success will return the bucket name on `bucket` properties.
-
-- bucket {String} bucket name
-- res {Object} response info, including
-  - status {Number} response status
-  - headers {Object} response headers
-  - size {Number} response size
-  - rt {Number} request total use time (ms)
-
-example:
-
-- Create a bucket name `helloworld` location on HongKong
-
-```js
-yield store.putBucket('helloworld', {
-  region: 'oss-cn-hongkong'
-});
-// set to use it by default
-store.setBucket('helloworld', 'oss-cn-hongkong');
-```
-
-### .setBucket(name[, region])
-
-Set current bucket.
-
-parameters:
-
-- name {String} bucket name
-- [region] {String} also change the region, default is `null`, don't change region.
-
-example:
-
-- Set `helloworld` to default bucket
-
-```js
-store.setBucket('helloworld');
-```
-
-### .deleteBucket*(name[, options])
-
-Delete an empty bucket.
-
-parameters:
-
-- name {String} bucket name
-  If bucket is not empty, will throw BucketNotEmptyError.
-  If bucket is not exists, will throw NoSuchBucketError.
-- [options] {Object} optional parameters
-  - [region] {String} the bucket data region location, please see [Data Regions](#data-regions),
-    default using store instance's region.
-    Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
-  - [timeout] {Number} the operation timeout
-
-Success will return:
-
-- res {Object} response info, including
-  - status {Number} response status
-  - headers {Object} response headers
-  - size {Number} response size
-  - rt {Number} request total use time (ms)
-
-example:
-
-- Delete the exists 'helloworld' bucket on 'oss-cn-hongkong'
-
-```js
-yield store.deleteBucket('helloworld', {
-  region: 'oss-cn-hongkong'
-});
-```
 
 ### .listBuckets*(query[, options])
 
@@ -206,6 +139,481 @@ var result = yield store.listBuckets({
 });
 console.log(result);
 ```
+
+### .putBucket*(name, region[, options])
+
+Create a new bucket.
+
+parameters:
+
+- name {String} bucket name
+  If bucket exists and not belong to current account, will throw BucketAlreadyExistsError.
+  If bucket not exists, will create a new bucket and set it's ACL.
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+  If change exists bucket region, will throw BucketAlreadyExistsError.
+  If region value invalid, will throw InvalidLocationConstraintError.
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the bucket name on `bucket` properties.
+
+- bucket {String} bucket name
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Create a bucket name `helloworld` location on HongKong
+
+```js
+yield store.putBucket('helloworld', 'oss-cn-hongkong');
+// use it by default
+store.useBucket('helloworld', 'oss-cn-hongkong');
+```
+
+### .deleteBucket*(name, region[, options])
+
+Delete an empty bucket.
+
+parameters:
+
+- name {String} bucket name
+  If bucket is not empty, will throw BucketNotEmptyError.
+  If bucket is not exists, will throw NoSuchBucketError.
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Delete the exists 'helloworld' bucket on 'oss-cn-hongkong'
+
+```js
+yield store.deleteBucket('helloworld', {
+  region: 'oss-cn-hongkong'
+});
+```
+
+### .useBucket(name, region)
+
+Use the bucket.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+
+example:
+
+- Use `helloworld` as the default bucket
+
+```js
+store.useBucket('helloworld', 'oss-cn-hongkong');
+```
+
+---
+
+### .putBucketACL*(name, region, acl[, options])
+
+Update the bucket ACL.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- acl {String} access control list, current available: `public-read-write`, `public-read` and `private`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Set bucket `helloworld` to `public-read-write`
+
+```js
+yield store.putBucketACL('helloworld', 'oss-cn-hongkong', 'public-read-write');
+```
+
+### .getBucketACL*(name, region, acl[, options])
+
+Get the bucket ACL.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- acl {String} acl settiongs string
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Get bucket `helloworld`
+
+```js
+var result = yield store.getBucketACL('helloworld', 'oss-cn-hongkong');
+console.log(result.acl);
+```
+
+---
+
+### .putBucketLogging*(name, region, prefix[, options])
+
+Update the bucket loggging settiongs.
+Log file will create every one hour and name format: `<prefix><bucket>-YYYY-mm-DD-HH-MM-SS-UniqueString`.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [prefix] {String} prefix path name to store the log files
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Enable bucket `helloworld` logging and save with prefix `logs/`
+
+```js
+yield store.putBucketLogging('helloworld', 'oss-cn-hongkong', 'logs/');
+```
+
+### .getBucketLogging*(name, region[, options])
+
+Get the bucket loggging settiongs.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- enable {Boolean} enable logging or not
+- prefix {String} prefix path name to store the log files, maybe `null`
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+- Get bucket `helloworld` logging settings
+
+```js
+var result = yield store.getBucketLogging('helloworld', 'oss-cn-hongkong');
+console.log(result.enable, result.prefix);
+```
+
+### .deleteBucketLogging(name, region[, options])
+
+Delete the bucket loggging settiongs.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+---
+
+### .putBucketWebsite*(name, region, config[, options])
+
+Set the bucket as a static website.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- config {Object} website config, contains blow properties:
+  - index {String} default page, e.g.: `index.html`
+  - [error] {String} error page, e.g.: 'error.html'
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+```js
+yield store.putBucketWebsite('hello', 'oss-cn-hangzhou', {
+  index: 'index.html'
+});
+```
+
+### .getBucketWebsite*(name, region[, options])
+
+Get the bucket website config.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- index {String} index page
+- error {String} error page, maybe `null`
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+### .deleteBucketWebsite*(name, region[, options])
+
+Delete the bucket website config.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+---
+
+### .putBucketReferer*(name, region, allowEmpty, referers[, options])
+
+Set the bucket request `Referer` white list.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- allowEmpty {Boolean} allow empty request referer or not
+- referers {Array<String>} `Referer` white list, e.g.:
+  ```js
+  [
+    'https://npm.taobao.org',
+    'http://cnpmjs.org'
+  ]
+  ```
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+```js
+yield store.putBucketReferer('hello', 'oss-cn-hangzhou', false, [
+  'https://npm.taobao.org',
+  'http://cnpmjs.org'
+]);
+```
+
+### .getBucketReferer*(name, region[, options])
+
+Get the bucket request `Referer` white list.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- allowEmpty {Boolean} allow empty request referer or not
+- referers {Array<String>} `Referer` white list
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+### .deleteBucketReferer*(name, region[, options])
+
+Delete the bucket request `Referer` white list.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+---
+
+### .putBucketLifecycle*(name, region, rules[, options])
+
+Set the bucket object lifecycle.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- rules {Array<Rule>} rule config list, each `Rule` will contains blow properties:
+  - [id] {String} rule id, if not set, OSS will auto create it with random string.
+  - prefix {String} store prefix
+  - status {String} rule status, allow values: `Enabled` or `Disabled`
+  - [days] {Number|String} expire after the `days`
+  - [date] {String} expire date, e.g.: `2022-10-11T00:00:00.000Z`
+    `date` and `days` only set one.
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+example:
+
+```js
+yield store.putBucketLifecycle('hello', 'oss-cn-hangzhou', [
+  {
+    id: 'delete after one day',
+    prefix: 'logs/',
+    status: 'Enabled',
+    days: 7
+  },
+  {
+    prefix: 'logs2/',
+    status: 'Disabled',
+    date: '2022-10-11T00:00:00.000Z'
+  }
+]);
+```
+
+### .getBucketLifecycle*(name, region[, options])
+
+Get the bucket object lifecycle.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- rules {Array<Rule>} the lifecycle rule list
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+### .deleteBucketLifecycle*(name, region[, options])
+
+Delete the bucket object lifecycle.
+
+parameters:
+
+- name {String} bucket name
+- region {String} the bucket data region location, please see [Data Regions](#data-regions),
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+---
 
 ## Object Operations
 
@@ -537,9 +945,9 @@ var result = yield store.copy('newName', 'oldName');
 var result = yield store.copy('logo.png', '/other-bucket/logo.png');
 ```
 
-### .updateMeta*(name, meta[, options])
+### .putMeta*(name, meta[, options])
 
-Update an exists object meta.
+Set an exists object meta.
 
 parameters:
 
@@ -570,7 +978,7 @@ example:
 - Update exists object meta
 
 ```js
-var result = yield store.updateMeta('ossdemo.txt', {
+var result = yield store.putMeta('ossdemo.txt', {
   uid: 1, pid: 'p123'
 });
 console.log(result);
@@ -579,7 +987,7 @@ console.log(result);
 - Clean up object meta
 
 ```js
-yield store.updateMeta('ossdemo.txt', null);
+yield store.putMeta('ossdemo.txt', null);
 ```
 
 ### .deleteMulti*(names[, options])
