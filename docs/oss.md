@@ -22,11 +22,11 @@ OSS, Open Storage Service. Equal to well know Amazon [S3](http://aws.amazon.com/
     - [.getBucketLogging*(name, region[, options])](#getbucketloggingname-region-options)
     - [.deleteBucketLogging*(name, region[, options])](#deletebucketloggingname-region-options)
   - Website
-    - [.putBucketWebsite*(name, region, config[, options])](#putbucketwebistename-region-config-options)
+    - [.putBucketWebsite*(name, region, config[, options])](#putbucketwebsitename-region-config-options)
     - [.getBucketWebsite*(name, region[, options])](#getbucketwebsitename-region-options)
-    - [.deleteBucketWebsite*(name, region[, options])](#deletebucketwebistename-region-options)
+    - [.deleteBucketWebsite*(name, region[, options])](#deletebucketwebsitename-region-options)
   - Referer
-    - [.putBucketReferer*(name, region, allowEmpty, referers[, options])](#putbucketreferername-region-allowEmpty-referers-options)
+    - [.putBucketReferer*(name, region, allowEmpty, referers[, options])](#putbucketreferername-region-allowempty-referers-options)
     - [.getBucketReferer*(name, region[, options])](#getbucketreferername-region-options)
     - [.deleteBucketReferer*(name, region[, options])](#deletebucketreferername-region-options)
   - Lifecycle
@@ -256,7 +256,7 @@ example:
 yield store.putBucketACL('helloworld', 'oss-cn-hongkong', 'public-read-write');
 ```
 
-### .getBucketACL*(name, region, acl[, options])
+### .getBucketACL*(name, region[, options])
 
 Get the bucket ACL.
 
