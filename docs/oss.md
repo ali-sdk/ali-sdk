@@ -117,10 +117,10 @@ Success will return buckets list on `buckets` properties.
 
 - buckets {Array<BucketMeta>} bucket meta info list
   Each `BucketMeta` will contains blow properties:
-    - Name {String} bucket name
-    - Location {String} bucket store data region, e.g.: `oss-cn-hangzhou-a`
-    - CreationDate {String} bucket create GMT date, e.g.: `2015-02-19T08:39:44.000Z`
-- owner {Object} object owner, including `ID` and `DisplayName`
+    - name {String} bucket name
+    - region {String} bucket store data region, e.g.: `oss-cn-hangzhou-a`
+    - creationDate {String} bucket create GMT date, e.g.: `2015-02-19T08:39:44.000Z`
+- owner {Object} object owner, including `id` and `displayName`
 - isTruncated {Boolean} truncate or not
 - nextMarker {String} next marker string
 - res {Object} response info, including
@@ -921,8 +921,8 @@ Success will return the copy result in `data` property.
 object:
 
 - data {Object} copy result
-  - LastModified {String} object last modified GMT string
-  - ETag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
+  - lastModified {String} object last modified GMT string
+  - etag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
 - res {Object} response info, including
   - status {Number} response status
   - headers {Object} response headers
@@ -960,11 +960,9 @@ parameters:
 
 Success will return the copy result in `data` property.
 
-object:
-
 - data {Object} copy result
-  - LastModified {String} object last modified GMT date, e.g.: `2015-02-19T08:39:44.000Z`
-  - ETag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
+  - lastModified {String} object last modified GMT date, e.g.: `2015-02-19T08:39:44.000Z`
+  - etag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
 - res {Object} response info, including
   - status {Number} response status
   - headers {Object} response headers
@@ -1006,7 +1004,7 @@ parameters:
 
 Success will return delete success objects in `deleted` property.
 
-- [deleted] {Array<Object>} object delete result list
+- [deleted] {Array<String>} deleted object names list
 - res {Object} response info, including
   - status {Number} response status
   - headers {Object} response headers
@@ -1048,13 +1046,13 @@ Success will return objects list on `objects` properties.
 
 - objects {Array<ObjectMeta>} object meta info list
   Each `ObjectMeta` will contains blow properties:
-    - Key {String} object name on oss
-    - LastModified {String} object last modified GMT date, e.g.: `2015-02-19T08:39:44.000Z`
-    - ETag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
-    - Type {String} object type, e.g.: `Normal`
-    - Size {Number} object size, e.g.: `344606`
-    - StorageClass {String} storage class type, e.g.: `Standard`
-    - Owner {Object} object owner, including `ID` and `DisplayName`
+    - name {String} object name on oss
+    - lastModified {String} object last modified GMT date, e.g.: `2015-02-19T08:39:44.000Z`
+    - etag {String} object etag contains `"`, e.g.: `"5B3C1A2E053D763E1B002CC607C5A0FE"`
+    - type {String} object type, e.g.: `Normal`
+    - size {Number} object size, e.g.: `344606`
+    - storageClass {String} storage class type, e.g.: `Standard`
+    - owner {Object} object owner, including `id` and `displayName`
 - prefixes {Array<String>} prefix list
 - isTruncated {Boolean} truncate or not
 - nextMarker {String} next marker string
