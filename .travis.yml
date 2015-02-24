@@ -1,10 +1,15 @@
 language: node_js
 node_js:
-  - 'iojs-1.2'
-  - 'iojs-1.1'
-  - 'iojs-1.0'
+  - 'iojs-1.3'
   - '0.12'
-  - '0.11'
-  - '0.10'
+
+env:
+  global:
+    # ALI_SDK_RDS_** env
+    - secure: "CHez+c0ghI/p23s6VIyeaclu036zrC7cUZMphMcbHG4+Yfp7NJRQWWcKc2503YD+UpjU8HuorWLPZsbqUYSTM3VfwKC+Ndmir70PQnxvc48pRO64ZtzldrTzKetC9MZspfxwnQaCXZ8RvfstrfcDMS5CdrZpYMDzNW5VK2sxmAM="
+    - secure: "NpkrBfOlVbDkjtgCMxx6+MuS3dEBtkpLl4+5AZTlAQL+uVJpmBY8/0RE9d+wGz9DJJrTMZ7eJPY82injE1fNMI9uVK9u1KAuK4ZosGYJjzWsrNZP0YgiyV7Ou//xffzJzvyZO8/2lYiBG52KehQPz2DTWNuMOf69BGIAOpIe6p4="
+    - secure: "Kn5XGm8iAGMTgXlZ1UgpHWe8yasxbDgiAP43xHZBOoTLLVq7ac7uxoRzSZ0M7nJk32/Mg+/VxXgY3Z8T3jEkR3JxKdpyjKl6lQRvaekyxkDNm/aRmOcax3O7jgrC8zFLEb9I+UlKdU9F/AlIrYhpDkeAc9SunPAU9g978HCZkgQ="
+    - secure: "L65vLNwOGJAq57ugy9XN3USplj0ODwnoZKoy3c+jPapSzPm7j1ZMRayzXf9wtIABniI9Mev0zanrloTHV9rwXMEPwp4XIVtglz5Zt01++FfbGwgK9gxk7f329+Ywk2ilzeXJ7K4w63/0wmQQGyWirUIEZFOEm85IqE1UPuAnTnU="
+
 script: "npm run test-travis"
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
