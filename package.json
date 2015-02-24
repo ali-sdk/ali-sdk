@@ -4,22 +4,24 @@
   "description": "An sdk include all aliyun, taobao, tmall, alibaba open apis.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --harmony --check-leaks -R spec -t 5000 test/*.test.js",
-    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 test/*.test.js",
-    "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 5000 test/*.test.js",
+    "test": "mocha --harmony --check-leaks -R spec -t 5000 -r co-mocha test/*.test.js",
+    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 -r co-mocha test/*.test.js",
+    "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 5000 -r co-mocha test/*.test.js",
     "jshint": "jshint .",
     "autod": "autod -w --prefix '~'",
     "cnpm": "npm install --registry=https://registry.npm.taobao.org",
     "contributors": "contributors -f plain -o AUTHORS"
   },
   "dependencies": {
-
+    "ali-oss": "~1.1.0",
+    "mysql": "~2.5.5"
   },
   "devDependencies": {
     "autod": "*",
+    "co-mocha": "*",
     "contributors": "*",
-    "jshint": "*",
     "istanbul": "*",
+    "jshint": "*",
     "mocha": "*"
   },
   "homepage": "https://github.com/node-modules/ali-sdk",

@@ -18,7 +18,7 @@ var assert = require('assert');
 var oss = require('../').oss;
 var config = require('./config');
 
-describe('oss.test.js', function () {
+describe.skip('oss.test.js', function () {
   before(function () {
     this.store = oss(config.oss);
   });
