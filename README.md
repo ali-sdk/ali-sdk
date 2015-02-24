@@ -39,11 +39,11 @@ Let global users can all use ali's services more easily.
 
 name | status     | description | version | usage          | origin api
 ---  | ---        | ---         | ---     | ---            | ---
-OSS  | ING        | Simple Store like S3 | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
+OSS  | DONE       | Simple Store like S3 | -       | [OSS Usage]    | [OSS API](http://docs.aliyun.com/#/oss/api-reference/abstract)
 OTS  | TODO       | Table Store like HBase | -       | [OTS Usage]    | [OTS API](http://docs.aliyun.com/#/ots/API-Reference/actions&ActionsSummary)
-OCS  | TODO       | Cache Service like Memcached | -       | [OCS Usage]    | [OCS protocol](http://docs.aliyun.com/#/ocs/Getting-Started/ocs-supported-protocol)
+OCS  | ING        | Cache Service like Memcached | -       | [OCS Usage]    | [OCS protocol](http://docs.aliyun.com/#/ocs/Getting-Started/ocs-supported-protocol)
 ECS  | TODO       | Elastic Compute like EC2 | -       | [ECS Usage]    | -
-RDS  | TODO       | Relational Database like MySQL | -       | [RDS Usage]    | -
+RDS  | ING        | Relational Database like MySQL | -       | [RDS Usage]    | -
 DRDS | TODO       | Distribute Relational Database | -       | [DRDS Usage]   | [DRDS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974369)
 SLB  | TODO       | Server Load Balancer | -       | [SLB Usage]    | -
 CDN  | TODO       | Content Delivery Network | -       | [CDN Usage]    | -
@@ -54,7 +54,7 @@ MTS | TODO       | Multimedia Transcoding Service | v1501 | [MTS Usage] | [MTS A
 ACE | TODO       | Aliyun Cloud Engine | - | [ACE Usage] | [ACE API]
 ESS | TODO       | Elastic Scaling | - | [ESS Usage] | [ESS API](http://imgs-storage.cdn.aliyuncs.com/help/ess/%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1API%E6%89%8B%E5%86%8C.pdf)
 OAS | TODO       | Archive Service | - | [OAS Usage] | [OAS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974642)
-KVStore | TODO   | Key-Value Store like Redis | - | [KVStore Usage] | [KVStore API](http://docs.aliyun.com/#/kvstore/quick-start/kvstore-redis-command)
+KVStore | ING    | Key-Value Store like Redis | - | [KVStore Usage] | [KVStore API](http://docs.aliyun.com/#/kvstore/quick-start/kvstore-redis-command)
 ODPS | TODO      | Data Processing like Hadoop | - | [ODPS Usage] | [ODPS API](http://docs.aliyun.com/#/odps)
 ADS | TODO       | Analytic Database, Realtime OLAP | - | [ADS Usage] | [ADS API]
 
