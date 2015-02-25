@@ -46,7 +46,7 @@ ECS  | TODO       | Elastic Compute like EC2 | -       | [ECS Usage]    | -
 RDS  | ING        | Relational Database like MySQL | -       | [RDS Usage]    | -
 DRDS | TODO       | Distribute Relational Database | -       | [DRDS Usage]   | [DRDS API](http://help.aliyun.com/knowledge_detail.htm?knowledgeId=5974369)
 SLB  | TODO       | Server Load Balancer | -       | [SLB Usage]    | -
-CDN  | TODO       | Content Delivery Network | -       | [CDN Usage]    | -
+CDN  | TODO       | Content Delivery Network | v1.6 2014-10-01 | [CDN Usage] | [CDN API](http://imgs-storage.cdn.aliyuncs.com/help/cdn/cdn%20open%20api%20v1.6.pdf?spm=5176.775974971.2.3.Dlwznk&file=cdn%20open%20api%20v1.6.pdf)
 SLS  | TODO       | Simple Log Service | -       | [SLS Usage]    | [SLS API](http://docs.aliyun.com/#/sls/api/overview)
 MQS  | TODO       | Message Queue | 2014-07-08 | [MQS Usage] | [MQS-API](http://imgs-storage.cdn.aliyuncs.com/help/mqs/MQS-API-Reference_2014-07-08.pdf)
 OpenSearch | TODO | Search Engine | - | [OpenSearch Usage] | [OpenSearch API](http://help.opensearch.aliyun.com/index.php?title=API%E6%96%87%E6%A1%A3)
