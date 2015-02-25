@@ -1,8 +1,11 @@
 {
   "name": "ali-sdk",
   "version": "0.0.0",
-  "description": "An sdk include all aliyun, taobao, tmall, alibaba open apis.",
+  "description": "SDK include all aliyun, taobao, tmall, alibaba open serivces",
   "main": "index.js",
+  "files": [
+    "index.js", "lib/"
+  ],
   "scripts": {
     "test": "mocha --harmony --check-leaks -R spec -t 15000 -r co-mocha test/*.test.js",
     "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 15000 -r co-mocha test/*.test.js",
@@ -24,21 +27,22 @@
     "jshint": "*",
     "mocha": "*"
   },
-  "homepage": "https://github.com/node-modules/ali-sdk",
+  "homepage": "https://github.com/ali-sdk/ali-sdk",
   "repository": {
     "type": "git",
-    "url": "git://github.com/node-modules/ali-sdk.git",
-    "web": "https://github.com/node-modules/ali-sdk"
+    "url": "git://github.com/ali-sdk/ali-sdk.git",
+    "web": "https://github.com/ali-sdk/ali-sdk"
   },
   "bugs": {
-    "url": "https://github.com/node-modules/ali-sdk/issues",
+    "url": "https://github.com/ali-sdk/ali-sdk/issues",
     "email": "m@fengmk2.com"
   },
   "keywords": [
     "ali-sdk", "ali", "aliyun", "taobao", "tmall", "alibaba"
   ],
   "engines": {
-    "node": ">= 0.11.14"
+    "node": ">= 0.12.0",
+    "iojs": ">= 1.0.0"
   },
   "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
   "license": "MIT"

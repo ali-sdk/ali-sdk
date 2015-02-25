@@ -1,7 +1,7 @@
 /**!
  * ali-sdk - test/oss.test.js
  *
- * Copyright(c) node-modules and other contributors.
+ * Copyright(c) ali-sdk and other contributors.
  * MIT Licensed
  *
  * Authors:

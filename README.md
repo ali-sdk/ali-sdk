@@ -12,14 +12,14 @@ ali-sdk
 
 [npm-image]: https://img.shields.io/npm/v/ali-sdk.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/ali-sdk
-[travis-image]: https://img.shields.io/travis/node-modules/ali-sdk.svg?style=flat-square
-[travis-url]: https://travis-ci.org/node-modules/ali-sdk
-[coveralls-image]: https://img.shields.io/coveralls/node-modules/ali-sdk.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/node-modules/ali-sdk?branch=master
+[travis-image]: https://img.shields.io/travis/ali-sdk/ali-sdk.svg?style=flat-square
+[travis-url]: https://travis-ci.org/ali-sdk/ali-sdk
+[coveralls-image]: https://img.shields.io/coveralls/ali-sdk/ali-sdk.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/ali-sdk/ali-sdk?branch=master
 [gittip-image]: https://img.shields.io/gittip/fengmk2.svg?style=flat-square
 [gittip-url]: https://www.gittip.com/fengmk2/
-[david-image]: https://img.shields.io/david/node-modules/ali-sdk.svg?style=flat-square
-[david-url]: https://david-dm.org/node-modules/ali-sdk
+[david-image]: https://img.shields.io/david/ali-sdk/ali-sdk.svg?style=flat-square
+[david-url]: https://david-dm.org/ali-sdk/ali-sdk
 [iojs-image]: https://img.shields.io/badge/io.js-%3E=_1.0-green.svg?style=flat-square
 [iojs-url]: http://iojs.org/
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.11.14-green.svg?style=flat-square
@@ -27,7 +27,7 @@ ali-sdk
 [download-image]: https://img.shields.io/npm/dm/ali-sdk.svg?style=flat-square
 [download-url]: https://npmjs.org/package/ali-sdk
 
-An sdk include all aliyun, taobao, tmall, alibaba open apis.
+SDK include all aliyun, taobao, tmall, alibaba open serivces.
 
 ## Goal of this module
 
