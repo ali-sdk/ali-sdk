@@ -38,6 +38,7 @@ OSS, Open Storage Service. Equal to well know Amazon [S3](http://aws.amazon.com/
   - [.put*(name, file[, options])](#putname-file-options)
   - [.head*(name[, options])](#headname-options)
   - [.get*(name, file[, options])](#getname-file-options)
+  - [.getStream*(name[, options])](#getstreamname-options)
   - [.delete*(name[, options])](#deletename-options)
   - [.copy*(name, sourceName[, options])](#copyname-sourcename-options)
   - [.putMeta*(name, meta[, options])](#putmetaname-meta-options)
@@ -853,6 +854,48 @@ console.log(Buffer.isBuffer(result.content));
 var filepath = '/home/ossdemo/demo.txt';
 yield store.get('ossdemo/not-exists-demo.txt', filepath);
 // will throw NoSuchKeyError
+```
+
+### .getStream*(name[, options])
+
+Get an object read stream.
+
+parameters:
+
+- name {String} object name store on OSS
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+  - [headers] {Object} extra headers
+    - 'If-Modified-Since' object modified after this time will return 200 and object meta,
+        otherwise return 304 not modified
+    - 'If-Unmodified-Since' object modified before this time will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-Match' object etag equal this will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-None-Match' object etag not equal this will return 200 and object meta,
+        otherwise return 304 not modified
+
+Success will return the stream instance and response info.
+
+object:
+
+- stream {ReadStream} readable stream instance
+    if response status is not 200, stream will be `null`.
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If object not exists, will throw NoSuchKeyError.
+
+example:
+
+- Get an exists object stream
+
+```js
+var result = yield store.getStream('ossdemo/demo.txt');
+result.stream.pipe(fs.createWriteStream('some file.txt'));
 ```
 
 ### .delete*(name[, options])
