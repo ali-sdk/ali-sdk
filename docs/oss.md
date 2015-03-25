@@ -44,6 +44,18 @@ OSS, Open Storage Service. Equal to well know Amazon [S3](http://aws.amazon.com/
   - [.putMeta*(name, meta[, options])](#putmetaname-meta-options)
   - [.deleteMulti*(names[, options])](#deletemultinames-options)
   - [.signatureUrl(name)](#signatureurlname)
+- [Create A Image Service Instance](#create-a-image-service-instance)
+  - [#oss.ImageClient(options)](#ossimageclientoptions)
+- [Image Operations](#image-operations)
+  - [imgClient.get*(name, file[, options])](#imgclientgetname-file-options)
+  - [imgClient.getStream*(name[, options])](#imgclientgetstreamname-options)
+  - [imgClient.getExif*(name[, options])](#imgclientgetexifname-options)
+  - [imgClient.getInfo*(name[, options])](#imgclientgetinfoname-options)
+  - [imgClient.putStyle*(name, style[, options])](#imgclientputstylename-style-options)
+  - [imgClient.getStyle*(name[, options])](#imgclientgetstylename-options)
+  - [imgClient.listStyle*([options])](#imgclientliststyleoptions)
+  - [imgClient.deleteStyle*(name[, options])](#imgclientdeletestylename-options)
+  - [imgClient.signatureUrl(name)](#imgclientsignatureurlname)
 - [Known Errors](#known-errors)
 
 ## Data Regions
@@ -1153,6 +1165,409 @@ example:
 ```js
 var url = store.signatureUrl('ossdemo.txt');
 console.log(url);
+```
+
+## Create A Image Service Instance
+
+Each Image Service instance required `accessKeyId`, `accessKeySecret`, `bucket` and `imageHost`.
+
+### oss.ImageClient(options)
+
+Create a Image service instance.
+
+options:
+- imageHost {String} your image service domain that binding to a OSS bucket
+- accessKeyId {String} access key you create on aliyun console website
+- accessKeySecret {String} access secret you create
+- bucket {String} the default bucket you want to access
+  If you don't have any bucket, please use `putBucket()` create one first.
+- [region] {String} the bucket data region location, please see [Data Regions](#data-regions),
+  default is `oss-cn-hangzhou`
+  Current available: `oss-cn-hangzhou`, `oss-cn-qingdao`, `oss-cn-beijing`, `oss-cn-hongkong` and `oss-cn-shenzhen`
+- [internal] {Boolean} access OSS with aliyun internal network or not, default is `false`
+  If your servers are running on aliyun too, you can set `true` to save lot of money.
+- [timeout] {String|Number} instance level timeout for all operations, default is `60s`
+
+example:
+
+```js
+var oss = require('ali-oss');
+
+var imgClient = oss.ImageClient({
+  accessKeyId: 'your access key',
+  accessKeySecret: 'your access secret',
+  bucket: 'my_image_bucket'
+  imageHost: 'thumbnail.myimageservice.com'
+});
+```
+
+## Image Operations
+
+All operations function is [generator], except `imgClient.signatureUrl`.
+
+generator function format: `functionName*(...)`.
+
+### imgClient.get*(name, file[, options])
+
+Get an image from the image channel.
+
+parameters:
+
+- name {String} image object name with operation style store on OSS
+- [file] {String|WriteStream} file path or WriteStream instance to store the image
+  If `file` is null or ignore this parameter, function will return info contains `content` property.
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+  - [headers] {Object} extra headers, detail see [RFC 2616](http://www.w3.org/Protocols/rfc2616/rfc2616.html)
+    - 'If-Modified-Since' object modified after this time will return 200 and object meta,
+        otherwise return 304 not modified
+    - 'If-Unmodified-Since' object modified before this time will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-Match' object etag equal this will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-None-Match' object etag not equal this will return 200 and object meta,
+        otherwise return 304 not modified
+
+Success will return the info contains response.
+
+object:
+
+- [content] {Buffer} file content buffer if `file` parameter is null or ignore
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If object not exists, will throw NoSuchKeyError.
+
+example:
+
+- Get an exists image with a style and store it to the local file
+
+```js
+var imagepath = '/home/ossdemo/demo.jpg';
+yield imgClient.get('ossdemo/demo.jpg@200w_200h', filepath);
+```
+
+_ Store image to a writestream
+
+```js
+yield imgClient.get('ossdemo/demo.jpg@200w_200h', somestream);
+```
+
+- Get an image content buffer
+
+```js
+var result = yield imgClient.get('ossdemo/demo.jpg@200w_200h');
+console.log(Buffer.isBuffer(result.content));
+```
+
+- Get a not exists object or a not image object
+
+```js
+var imagepath = '/home/ossdemo/demo.jpg';
+yield imgClient.get('ossdemo/not-exists-demo.jpg@200w_200h', filepath);
+// will throw NoSuchKeyError
+```
+
+### imgClient.getStream*(name[, options])
+
+Get an image read stream.
+
+parameters:
+
+- name {String} image object name with operation style store on OSS
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+  - [headers] {Object} extra headers
+    - 'If-Modified-Since' object modified after this time will return 200 and object meta,
+        otherwise return 304 not modified
+    - 'If-Unmodified-Since' object modified before this time will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-Match' object etag equal this will return 200 and object meta,
+        otherwise throw PreconditionFailedError
+    - 'If-None-Match' object etag not equal this will return 200 and object meta,
+        otherwise return 304 not modified
+
+Success will return the stream instance and response info.
+
+object:
+
+- stream {ReadStream} readable stream instance
+    if response status is not 200, stream will be `null`.
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+
+If object not exists, will throw NoSuchKeyError.
+
+example:
+
+- Get an exists image object stream
+
+```js
+var result = yield imgClient.getStream('ossdemo/demo.jpg@200w_200h');
+result.stream.pipe(fs.createWriteStream('some demo.jpg'));
+```
+
+### imgClient.getExif*(name[, options])
+
+Get a image exif info by image object name from the image channel.
+
+parameters:
+- name {String} image object name
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the info contains response.
+
+object:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+- data {Object} image exif object
+
+If object don't have exif, will throw 400 BadRequest.
+
+example:
+
+```js
+var result = yield imgClient.getExif('demo.jpg');
+// resut:
+// {
+//   res: {
+//     status: 200,
+//     statusCode: 200,
+//     headers: {
+//       server: "Tengine",
+//       content - type: "application/json",
+//       content - length: "148",
+//       connection: "keep-alive",
+//       date: "Tue, 31 Mar 2015 11:06:32 GMT",
+//       "last-modified": "Mon, 30 Mar 2015 10:46:35 GMT"
+//     },
+//     size: 148,
+//     aborted: false,
+//     rt: 461,
+//     keepAliveSocket: false
+//   },
+//   data: {
+//     FileSize: 343683,
+//     ImageHeight: 1200,
+//     ImageWidth: 1600,
+//     Orientation: 1
+//   }
+// }
+
+```
+
+### imgClient.getInfo*(name[, options])
+
+Get a image info and exif info by image object name from the image channel.
+
+parameters:
+- name {String} image object name
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the info contains response.
+
+object:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+- data {Object} image exif object
+
+example:
+
+```js
+var result = yield imgClient.getInfo('demo.jpg');
+// resut:
+// {
+//   res: {
+//     status: 200,
+//     statusCode: 200,
+//     headers: {
+//       server: "Tengine",
+//       content - type: "application/json",
+//       content - length: "148",
+//       connection: "keep-alive",
+//       date: "Tue, 31 Mar 2015 11:06:32 GMT",
+//       "last-modified": "Mon, 30 Mar 2015 10:46:35 GMT"
+//     },
+//     size: 148,
+//     aborted: false,
+//     rt: 461,
+//     keepAliveSocket: false
+//   },
+//   data: {
+//     FileSize: 343683,
+//     Format: "jpg",
+//     ImageHeight: 1200,
+//     ImageWidth: 1600,
+//     Orientation: 1
+//   }
+// }
+
+```
+
+
+### imgClient.putStyle*(name, style[, options])
+// TODO
+
+### imgClient.getStyle*(name[, options])
+
+Get a style by name from the image channel.
+
+parameters:
+- name {String} image style name
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the info contains response.
+
+object:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+- data {Object} styles object
+  - Name {String} style name
+  - Content {String} style content
+  - CreateTime {String} style create time
+  - LastModifyTime {String} style last modify time
+
+example:
+
+```js
+var result = yield imgClient.getStyle('400');
+// resut:
+// {
+//   res: {
+//     status: 200,
+//     statusCode: 200,
+//     headers: {
+//       server: "Tengine",
+//       content - type: "application/xml",
+//       content - length: "234",
+//       connection: "keep-alive",
+//       date: "Tue, 31 Mar 2015 10:58:20 GMT"
+//     },
+//     size: 234,
+//     aborted: false,
+//     rt: 398,
+//     keepAliveSocket: false
+//   },
+//   data: {
+//     Name: "400",
+//     Content: "400w_90Q_1x.jpg",
+//     CreateTime: "Thu, 19 Mar 2015 08:34:21 GMT",
+//     LastModifyTime: "Thu, 19 Mar 2015 08:34:21 GMT"
+//   }
+// }
+```
+
+### imgClient.listStyle*([options])
+
+Get all styles from the image channel.
+
+parameters:
+- [options] {Object} optional parameters
+  - [timeout] {Number} the operation timeout
+
+Success will return the info contains response.
+
+object:
+
+- res {Object} response info, including
+  - status {Number} response status
+  - headers {Object} response headers
+  - size {Number} response size
+  - rt {Number} request total use time (ms)
+- data {Array} styles array, a style object:
+  - Name {String} style name
+  - Content {String} style content
+  - CreateTime {String} style create time
+  - LastModifyTime {String} style last modify time
+
+example:
+
+```js
+var result = yield imgClient.listStyle();
+// resut:
+// {
+//   res: {
+//     status: 200,
+//     statusCode: 200,
+//     headers: {
+//       server: "Tengine",
+//       content - type: "application/xml",
+//       content - length: "913",
+//       connection: "keep-alive",
+//       date: "Tue, 31 Mar 2015 10:47:32 GMT"
+//     },
+//     size: 913,
+//     aborted: false,
+//     rt: 1911,
+//     keepAliveSocket: false
+//   },
+//   data: [{
+//     Name: "200-200",
+//     Content: "0e_200w_200h_0c_0i_0o_90Q_1x.jpg",
+//     CreateTime: "Thu, 19 Mar 2015 08:28:08 GMT",
+//     LastModifyTime: "Thu, 19 Mar 2015 08:28:08 GMT"
+//   }, {
+//     Name: "800",
+//     Content: "800w_90Q_1x.jpg",
+//     CreateTime: "Thu, 19 Mar 2015 08:29:15 GMT",
+//     LastModifyTime: "Thu, 19 Mar 2015 08:29:15 GMT"
+//   }, {
+//     Name: "400",
+//     Content: "400w_90Q_1x.jpg",
+//     CreateTime: "Thu, 19 Mar 2015 08:34:21 GMT",
+//     LastModifyTime: "Thu, 19 Mar 2015 08:34:21 GMT"
+//   }, {
+//     Name: "600",
+//     Content: "600w_90Q_1x.jpg",
+//     CreateTime: "Thu, 19 Mar 2015 08:35:02 GMT",
+//     LastModifyTime: "Thu, 19 Mar 2015 08:35:02 GMT"
+//   }]
+// }
+```
+
+### imgClient.deleteStyle*(name[, options])
+// TODO
+
+### imgClient.signatureUrl(name)
+
+Create a signature url for directly download.
+
+parameters:
+
+- name {String} image object name with operation style store on OSS
+- [options] {Object} optional parameters
+  - [expires] {Number} after expires seconds, the url will become invalid, default is `1800`
+  - [timeout] {Number} the operation timeout
+
+Success will return full signature url.
+
+example:
+
+```js
+var url = imgClient.signatureUrl('
+');
+// http://thumbnail.myimageservice.com/demo.jpg@200w_200h?OSSAccessKeyId=uZxyLARzYZtGwHKY&Expires=1427803849&Signature=JSPRe06%2FjQpQSj5zlx2ld1V%2B35I%3D
 ```
 
 ## Known Errors
