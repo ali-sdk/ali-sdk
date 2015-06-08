@@ -79,7 +79,7 @@ TBD
 [OTS Usage]: docs/ots.md
 [OCS Usage]: docs/ocs.md
 [ECS Usage]: docs/ecs.md
-[RDS Usage]: docs/rds.md
+[RDS Usage]: https://github.com/ali-sdk/ali-rds#rds-usage
 [SLB Usage]: docs/slb.md
 [CDN Usage]: docs/cdn.md
 [SLS Usage]: docs/sls.md
