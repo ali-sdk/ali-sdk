@@ -12,7 +12,7 @@
     "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 15000 test/*.test.js",
     "jshint": "jshint .",
     "autod": "autod -w --prefix '~' -k ali-oss,ali-rds",
-    "cnpm": "npm install --registry=https://registry.npm.taobao.org"
+    "cnpm": "npm install --registry=https://registry.npmmirror.com"
   },
   "dependencies": {
     "ali-oss": "~2.0.0",
