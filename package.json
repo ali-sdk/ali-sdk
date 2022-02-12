@@ -4,7 +4,8 @@
   "description": "SDK include all aliyun, taobao, tmall, alibaba open serivces",
   "main": "index.js",
   "files": [
-    "index.js", "docs/"
+    "index.js",
+    "docs/"
   ],
   "scripts": {
     "test": "mocha --harmony --check-leaks -R spec -t 15000 test/*.test.js",
@@ -15,7 +16,7 @@
     "cnpm": "npm install --registry=https://registry.npmmirror.com"
   },
   "dependencies": {
-    "ali-oss": "~2.0.0",
+    "ali-oss": "~4.4.4",
     "ali-rds": "~1.0.0"
   },
   "devDependencies": {
@@ -35,7 +36,12 @@
     "email": "m@fengmk2.com"
   },
   "keywords": [
-    "ali-sdk", "ali", "aliyun", "taobao", "tmall", "alibaba"
+    "ali-sdk",
+    "ali",
+    "aliyun",
+    "taobao",
+    "tmall",
+    "alibaba"
   ],
   "engines": {
     "node": ">= 0.12.0",
