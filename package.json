@@ -15,7 +15,7 @@
     "cnpm": "npm install --registry=https://registry.npmmirror.com"
   },
   "dependencies": {
-    "ali-oss": "~2.0.0",
+    "ali-oss": "~4.4.4",
     "ali-rds": "~1.0.0"
   },
   "devDependencies": {
